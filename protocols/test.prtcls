@@ -1,0 +1,94 @@
+[SAINTHeaderByte]
+	ProtocolID B0(b7|b3)
+	Command B0(b2)
+	IsTx B0(b1)
+	TimeStampIncluded B0(b0)
+
+	[SAINT_Protocol_IDs]
+		SAINT2_Configuration_Command 0x08
+		IIC 0x20
+		Keyword_2000 0x28
+		CAN1 0x50
+		CAN2 0x58
+		Class2 0x60
+		CAN3 0xA0
+		CAN4 0xA8
+		LIN 0xB8
+		ISO15765-2_CAN1 0xC0
+		ISO15765-2_CAN2 0xC8
+		CAN_FD1 0xD0
+		CAN_FD2 0xD8
+		ISO15765-2_CAN3 0xE0
+		ISO15765-2_CAN4 0xE8
+		Block_Transfer 0xF8
+
+[CANTransmitFrame]
+	HeaderByte [SAINTHeaderByte]
+	IsExtendedIdentifier B1(b7)
+	ErrorInFrame B1(b6)
+	IsRemoteFrame B1(b5)
+	CANFrameDefinitionBits (IsExtendedIdentifier ? B1(b7|b5) : B1(b7|b3))
+	Identifier (IsExtendedIdentifier ? B1(b4)|B4(b0) : B1(b2)|B2(b0))
+	Data (IsExtendedIdentifier ? (IsRemoteFrame ? B6 : B6|B-1) : (IsRemoteFrame ? B4 : B4|B-1))
+
+[ReceivedCANFrame]
+	HeaderByte [SAINTHeaderByte]
+	IsExtendedIdentifier B1(b7)
+	ErrorInFrame B1(b6)
+	IsRemoteFrame B1(b5)
+	CANFrameDefinitionBits (IsExtendedIdentifier ? B1(b7|b5) : B1(b7|b3))
+	Identifier (IsExtendedIdentifier ? B1(b4)|B4(b0) : B1(b2)|B2(b0))
+	Data (IsExtendedIdentifier ? (IsRemoteFrame ? B6 : (HeaderByte.TimeStampIncluded ? B6|B-4 : B6|B-2)) : (IsRemoteFrame ? B4 : (HeaderByte.TimeStampIncuded ? B4|B-4 : B4|B-2)))
+	CompletionCode (HeaderByte.TimeStampIncluded ? B-3 : B-1)
+	TimeStamp (HeaderByte.TimeStampIncluded ? B-2|B-1 : Undefined)
+
+[Testy]
+	Test B0(b3|b1)|B4
+
+
+
+
+# The `|` symbol specifies a range of bytes or bits.
+# `B` charactar specifies Bytes while the `b` character specifies bits.
+# 1 class variable is specified on 1 line.
+# Negative indecies work in a Pythonic manner, where `-1` indicates the last index in a sequence.
+# Variables specified above the current line can be referenced by name.
+# Variables of a previously defined protocol can be accessed like `<Protocol>.<Variable>`. This will work recursively.
+# Defining a Variable as an instance of a previously defined protocol is done as: `<Variable> [<Protocol>]`
+# Values that can evaluate to multiple bytes will be defined as byte[]'s
+# Values that evaluate only to 1 bit will be defined as bool's.
+# References to existing protocols/variables will apply references to the C functions.
+# All C# Variables will simply access C functions with get/set methods.
+
+
+# NOTES:…
+
+#ifdef _MSC_VER
+#define forceinline __forceinline
+#elif defined(__GNUC__)
+#define forceinline __attribute__((always_inline)) inline
+#else
+#define forceinline inline
+#endif
+
+
+
+# Every Assigned Variable is created in the C# code
+# with:
+
+# public class ProtocolName
+# {
+# 	  private byte[] data;
+#
+#     public ProtocolName(byte[] data) 
+#     {
+#         this.data = data;
+#     }
+#	  
+# 	  public <determined-type> Variable1 
+# 	  {
+# 	      get => ;
+#         set => ;
+# 	  }
+# }
+# Each Value assigned to a Variable is evaluated 

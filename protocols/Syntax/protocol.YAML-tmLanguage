@@ -1,0 +1,82 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: Protocol
+file_extensions:
+  - prtcls
+scope: source.protocol
+
+contexts:
+  # The prototype context is prepended to all contexts but those setting
+  # meta_include_prototype: false.
+  prototype:
+    - include: comments
+
+  main:
+    # The main context is the initial starting point of our syntax.
+    # Include other contexts from here (or specify them directly).
+    - include: headers
+    - include: keywords
+    - include: values
+    - include: ranges
+    - include: brackets
+    - include: bracket_strt
+    - include: if_logic
+
+  headers:
+    - match: '(?<=\[)[a-zA-Z\_]+(?=\])'
+      scope: keyword.protocol
+
+  keywords:
+    # Assigned variables
+    - match: '^(\t+)?\b[a-zA-Z\d-_]+\b'
+      scope: variable.parameter.protocol
+
+  values:
+    - include: ranges
+    - include: headers
+      scope: constant.language.protocol
+
+  ranges:
+    - match: '(?<= )B(-)?\d+(\(b(-)?\d+(\|)?(b(-)?\d+)?\))?(\|B(-)?\d+(\(b(-)?\d+(\|)?(b(-)?\d+)?\))?)?'
+      scope: constant.numeric.protocol
+
+  brackets:
+    - match: '\[|\]'
+      scope: keyword.operator.word.protocol
+
+  comments:
+    # Comments begin with a '//' and finish at the end of the line.
+    - match: '\#'
+      scope: punctuation.comment.protocol
+      push:
+        # This is an anonymous context push for brevity.
+        - meta_scope: comment.line.hash.protocol
+        - match: $\n?
+          pop: true
+
+  bracket_strt:
+    - match: \(
+      scope: keyword.operator.logical.protocol
+      push: bracket_end
+    - match: \)
+      scope: invalid.illegal.protocol
+
+  bracket_end:
+    - match: \)
+      scope: keyword.operator.logical.protocol
+      pop: true
+    - include: main
+
+  if_logic:
+    - match: ' \? '
+      scope: keyword.operator.logical.protocol
+      push: logic_end
+    - match: \)
+      scope: invalid.illegal.protocol
+
+  logic_end:
+    - match: ' \: '
+      scope: keyword.operator.logical.protocol
+      pop: true
+    - include: main
