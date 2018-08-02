@@ -1,0 +1,499 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SearchTrie</name>
+    </assembly>
+    <members>
+        <member name="T:Global.SearchTrie.Patterns.PatternDictionary`2">
+            <summary>
+            A class for the storage and lookup of patterns.
+            </summary>
+            <typeparam name="TKeyPiece"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="F:Global.SearchTrie.Patterns.PatternDictionary`2.genericPiece">
+            <summary>
+            The piece that matches any TKeyPiece.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.Patterns.PatternDictionary`2.genericSeriesPiece">
+            <summary>
+            The piece that matches any ending of a TKey.
+            </summary>
+        </member>
+        <member name="M:Global.SearchTrie.Patterns.PatternDictionary`2.#ctor(`0,`0)">
+            <summary>
+            Construct a new Pattern Dictionary for storing patterns.
+            </summary>
+            <param name="generic">The piece that represents a generic piece.</param>
+            <param name="series">The piece that represents a series of any pieces.</param>
+        </member>
+        <member name="M:Global.SearchTrie.Patterns.PatternDictionary`2.Collect(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Return the set of all patterns values that match the given item.
+            </summary>
+            <param name="item">The key to match.</param>
+            <returns>A set of all the Values.</returns>
+        </member>
+        <member name="M:Global.SearchTrie.Patterns.PatternDictionary`2.Collect(System.Collections.Generic.IList{`0})">
+            <summary>
+            Returns the set of all patterns values that match the series of
+            TKeyPieces in the parameter.
+            </summary>
+            <param name="pieces">The series of TKeyPieces to match.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.Patterns.PatternDictionary`2.Collect(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node,System.Collections.Generic.IList{`0},System.Int32)">
+            <summary>
+            Collects the set of Values in the trie (<paramref name="n"/>)
+            matching the <paramref name="pieces"/> starting at index of idx
+            in the list of <paramref name="pieces"/>.
+            </summary>
+            <param name="n">The "root" node of the trie.</param>
+            <param name="pieces">The list of TKeyPiece's to match.</param>
+            <param name="idx">The index to start matching to.</param>
+            <returns>The collection of values matching the pieces.</returns>
+        </member>
+        <member name="T:Global.SearchTrie.TernarySearchTrie`2">
+            <summary>
+            This is the structure for a balanced ternary search trie which can be used
+            on any appropriate data types.
+            <para>
+            It uses an efficient tree structure (SortedDictionary eg. Red-Black Tree)
+            for indexing at a level to maintain l*log(n) lookup speeds, where 
+            <code>l = the average length of a word</code> and 
+            <code>n = the number of items in the structure.</code> 
+            </para>
+            </summary>
+            <typeparam name="TKeyPiece">The peices that the Keys will be split into that are comparable (eg. char's).</typeparam>
+            <typeparam name="TValue">The object to relate with a Key.</typeparam>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.GetEnumerator">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.GetEnumerable(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node)">
+            <summary>
+            Uses yielding to iterate over the tree.
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Contains(System.Collections.Generic.KeyValuePair{System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IList{`1}})">
+            <summary>
+            
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.current">
+            <summary>
+            The Current item pointed to by the enumerator.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.o">
+            <summary>
+            Current protector.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.iteratorThread">
+            <summary>
+            Recursive stack for iteration over trie.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.disp">
+            <summary>
+             Disposing flag.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.started">
+            <summary>
+            Identifies whether the recursive iterator thread has started or
+            not.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.Done">
+            <summary>
+            Flag to identify when the end of the Trie is reached or to 
+            short circuit the iteration.
+            </summary>
+        </member>
+        <member name="P:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.Current">
+            <summary>
+            Obtains the current item being referenced.
+            </summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.#ctor(Global.SearchTrie.TernarySearchTrie{`0,`1})">
+            <summary>
+            Construct a new TernaryTrieEnumerator.
+            </summary>
+            <param name="trie"></param>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.StartThread">
+            <summary>
+            Starts the recursion thread.
+            </summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.ThreadFunction(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node)">
+            <summary>
+            This function does some simple things.
+            
+            <para>Mainly it traverses the Trie left to right, recursively.
+            Thus the left-most will be visited first and the
+            right-most nodes last.</para>
+            
+            <para>Whenever it encounters an <typeparamref name="TValue"/>
+            it will assign it to the current value.</para>
+            
+            <para> A special feature of this function is that it calls 
+            WaitOne() on a waitHandle object so that the function
+            stops after it arrives at the next <typeparamref name="TValue"/>
+            and thus can be used by the function MoveNext().</para>
+            
+            <para>BEWARE:
+            Any exiting of this function will not leave the lock and thus
+            must be exited after the return, externally.</para>
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.ThreadInitFunction">
+            <summary>
+            This starts the thread.
+            </summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.MoveNext">
+            <summary>
+            Prompts the next item to be referenced by Current.
+            </summary>
+            <returns>True if the Current object is not past the end of 
+            the collection.</returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.MoveInternal">
+            <summary>
+            Prompts the IteratorThread to advance to the next object in the Trie.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.Reset">
+            <summary>
+            Resets the enumerator to start from the beginning of the Trie.
+            </summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.Dispose(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TernaryTrieEnumerator.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.root">
+            <summary>
+            The root of the Trie.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.size">
+            <summary>
+            The internal counter on how many items are in the Trie.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.modified">
+            <summary>
+            A flag to track modifications to the datastructure.
+            </summary>
+        </member>
+        <member name="P:Global.SearchTrie.TernarySearchTrie`2.AllVisited">
+            <summary>
+            Set the visted status of all nodes in the privided value..
+            </summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.SetNV(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node,System.Boolean)">
+            <summary>
+            Internal set operation to recursively set all nodes 
+            visited status to <paramref name="v"/>.
+            </summary>
+            <param name="n"></param>
+            <param name="v"></param>
+        </member>
+        <member name="T:Global.SearchTrie.TernarySearchTrie`2.Node">
+            <summary>
+            Represents a node of the tree.
+            </summary>
+            <remarks>Using fields instead of properties drops execution time by about 40%.</remarks>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.Node.Key">
+            <summary>
+            Gets or sets the node's key.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.Node.Values">
+            <summary>
+            Gets or sets the node's value.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.Node.Next">
+            <summary>
+            Gets or sets the next Node down.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.Node.IsContainer">
+            <summary>
+            Marks this node as containing data or not.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.Node.Visited">
+            <summary>
+            Flag to track when nodes are visited.
+            </summary>
+        </member>
+        <member name="F:Global.SearchTrie.TernarySearchTrie`2.Node.repValue">
+            <summary>
+            Set when this node is a container.
+            </summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Search(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Searches for a given pattern in the datastructure.
+            </summary>
+            <param name="pattern">The pattern to match to.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Search(System.Collections.Generic.IList{`0})">
+            <summary>
+            Searches through the datastructure for any items that 
+            match the given pattern.
+            </summary>
+            <param name="pattern"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Collect(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node,System.Collections.Generic.IList{`0},System.Int32)">
+            <summary>
+            Collects items matching the given pieces by progressing recursively
+            through the trie.
+            </summary>
+            <param name="n">The current node.</param>
+            <param name="pieces">The series of pieces.</param>
+            <param name="idx">The index of the piece currently in focus.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.CollectAfter(System.Collections.Generic.IList{`0})">
+            <summary>
+            Collects all items in the Trie with the given prefix.
+            </summary>
+            <param name="prefix">The prefix to match.</param>
+            <returns>A list of values with the given prefix.</returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.GetValues(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node,System.Collections.Generic.IList{`1}@)">
+            <summary>
+            Recursively select the values of Nodes starting at the 
+            provided Node <paramref name="n"/>.
+            </summary>
+            <param name="n">The Node to collect below.</param>
+            <param name="values">The place to store TValues found.</param>
+        </member>
+        <member name="P:Global.SearchTrie.TernarySearchTrie`2.Count">
+            <summary>
+            Obtains the number of unique items in the Trie.
+            </summary>
+        </member>
+        <member name="P:Global.SearchTrie.TernarySearchTrie`2.Keys">
+            <summary>
+            Iterates over the Trie and collects the keys.
+            </summary>
+        </member>
+        <member name="P:Global.SearchTrie.TernarySearchTrie`2.Values">
+            <summary>
+            Iterates over the Trie and collects the values.
+            </summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2._getVals(System.Collections.Generic.KeyValuePair{System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IList{`1}}[],System.Int32,Global.SearchTrie.TernarySearchTrie{`0,`1}.Node)">
+            <summary>
+            
+            </summary>
+            <param name="array"></param>
+            <param name="arrayIndex"></param>
+            <param name="node"></param>
+        </member>
+        <member name="P:Global.SearchTrie.TernarySearchTrie`2.IsReadOnly">
+            <summary>
+            Returns false by default.
+            </summary>
+        </member>
+        <member name="P:Global.SearchTrie.TernarySearchTrie`2.System#Collections#Generic#IDictionary{System#Collections#Generic#IEnumerable{TKeyPiece},System#Collections#Generic#IList{TValue}}#Item(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Access the IList of TValues at the given TKey index. If the
+            assignment operator is used then the existing TValue's are
+            overwritten.
+            </summary>
+            <param name="key">The location of the values to retrieve.</param>
+            <returns>The same as the Search function.</returns>
+        </member>
+        <member name="P:Global.SearchTrie.TernarySearchTrie`2.Item(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Obtains the <typeparamref name="TValue"/> for the given Key.
+            </summary>
+            <param name="key"></param>
+            <returns>The <typeparamref name="TValue"/>for the given Key.</returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Clear">
+            <summary>
+            Removes everything from the data structure.
+            </summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Contains(System.Collections.Generic.KeyValuePair{System.Collections.Generic.IEnumerable{`0},`1})">
+            <summary>
+            Checks if a given pair are in the trie.
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.ContainsKey(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Checks if the given Key has been previously been added into the Trie.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.ContainsKey(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node,System.Collections.Generic.IEnumerator{`0})">
+            <summary>
+            Determines whether the specified node contains key.
+            </summary>
+            <param name="node">The node.</param>
+            <param name="enmrtr">The enmrtr.</param>
+            <returns>
+              <c>true</c> if the specified node contains key; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.CopyTo(System.Collections.Generic.KeyValuePair{System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IList{`1}}[],System.Int32)">
+            <summary>
+            Copies the elements of the Trie to an array of type 
+            KeyValuePair(TKey, TValue), starting at the specified array index.
+            </summary>
+            <param name="array"></param>
+            <param name="arrayIndex"></param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="array"/> is <code>null</code>.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception>
+            <exception cref="T:System.ArgumentException">The number of elements in the source Trie is greater than the 
+            available space from index to the end of the destination array.</exception>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2._copyTo(System.Collections.Generic.KeyValuePair{System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IList{`1}}[],System.Int32@,Global.SearchTrie.TernarySearchTrie{`0,`1}.Node)">
+            <summary>
+            
+            </summary>
+            <param name="array"></param>
+            <param name="arrayIndex"></param>
+            <param name="node"></param>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.TryGetValue(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IList{`1}@)">
+            <summary>
+            Efficiently obtains a <typeparamref name="TValue"/> when 
+            unsure about its existence in the data structure.
+            </summary>
+            <param name="key">The key to check for.</param>
+            <param name="value">The value to assigned to.</param>
+            <returns>True if found.</returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Add(System.Collections.Generic.IEnumerable{`0},`1)">
+            <summary>
+            Adds the given Key/<typeparamref name="TValue" />
+            pair to the Trie.
+            </summary>
+            <param name="key">The location to place the <paramref name="item" />.</param>
+            <param name="item">The object to place in the trie.</param>
+            <exception cref="T:System.ArgumentNullException">key is null.</exception>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Add(System.Collections.Generic.KeyValuePair{System.Collections.Generic.IEnumerable{`0},`1})">
+            <summary>Adds the given Key/<typeparamref name="TValue"/>
+            pair to the Trie.</summary>
+            <param name="item">The object to place in the trie.</param>
+            <exception cref="T:System.ArgumentNullException">key is null.</exception>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Add(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IList{`1})">
+            <summary>
+            Adds the given set of <typeparamref name="TValue"/>s at the given
+            Key location.
+            </summary>
+            <param name="key">The target location.</param>
+            <param name="value">The package.</param>
+            <exception cref="T:System.ArgumentNullException">key is null.</exception>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Add(System.Collections.Generic.KeyValuePair{System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IList{`1}})">
+            <summary>
+            Adds a given pair into the dictionary.
+            </summary>
+            <param name="item">The pair.</param>
+            <exception cref="T:System.ArgumentNullException">item.key is null.</exception>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Add(System.Collections.Generic.IList{`1},Global.SearchTrie.TernarySearchTrie{`0,`1}.Node,System.Collections.Generic.IEnumerator{`0},System.Collections.Generic.IEnumerable{`0})">
+            <summary>Uses an Enumerator(<typeparamref name="TKeyPiece"/>)
+            to advance through the Key.</summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Remove(System.Collections.Generic.KeyValuePair{System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IList{`1}})">
+            <summary>
+            Remove a KeyValuePair if it exists in the dictionary.
+            </summary>
+            <param name="item">The pair to remove from the collection.</param>
+            <returns>True if the removal was successful and and item was
+            removed from the Trie.</returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Remove(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Removes an item from the Trie by Key value.
+            </summary>
+            <param name="key">The Key to remove from the Trie.</param>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Remove(System.Collections.Generic.IEnumerable{`0},`1)">
+            <summary>
+            Removes an item from the Trie by key and a single value
+            </summary>
+            <param name="key"></param>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Remove(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node,System.Collections.Generic.IEnumerator{`0},System.Boolean@)">
+            <summary>Uses an Enumerator(<typeparamref name="TKeyPiece"/>)
+            to advance through the Key.</summary>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Remove(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node,System.Collections.Generic.IEnumerator{`0},System.Collections.Generic.IList{`1},System.Boolean@)">
+            <summary>
+            Removes a Node with the given key and the given set of values.
+            Otherwise it does nothing and mod is set to false.
+            </summary>
+            <param name="node">The node to work with on this level of
+            recursion.</param>
+            <param name="enmrtr">The instance of an enumerator to move through
+            the tree.</param>
+            <param name="value">The set of values in the pair to remove.</param>
+            <param name="mod">Flag to show whether the tree was modified.</param>
+            <returns>The Node we worked with.</returns>
+        </member>
+        <member name="M:Global.SearchTrie.TernarySearchTrie`2.Remove(Global.SearchTrie.TernarySearchTrie{`0,`1}.Node,System.Collections.Generic.IEnumerator{`0},`1,System.Boolean@)">
+            <summary>
+            Removes a single value from a node.
+            </summary>
+            <param name="node">The node to work with on this level of
+            recursion.</param>
+            <param name="enmrtr">The instance of an enumerator to move through
+            the tree.</param>
+            <param name="value">The value in the pair to remove.</param>
+            <param name="mod">Flag to show whether the tree was modified.</param>
+            <returns>The Node we worked with.</returns>
+        </member>
+    </members>
+</doc>

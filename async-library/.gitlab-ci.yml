@@ -1,0 +1,64 @@
+variables:
+    BUILD_: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe
+    NUGET_: C:\Program Files (x86)\NuGet\nuget.exe
+    TEST_: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe
+    PROJECT_NAME: "async-library"
+    MODE: "Release"
+    CPU_CONFIGURATION: "Any CPU"
+    TEST_DLL: AsyncLibraryUnitTesting.dll
+    OUTPUT_: $CI_PROJECT_DIR\build\$PROJECT_NAME\$MODE
+    DARKRAI_: 10.194.212.20
+
+stages:
+    - pre_build
+    - build
+    - test
+    - deploy
+
+Restore NuGet:
+    stage: pre_build
+    script:
+        - echo "Restoring nuget packages..."
+        - '"%NUGET_%" restore -NonInteractive'
+        - echo %PROJECT_NAME%
+        - echo %MODE%
+        - echo %OUTPUT_%
+  
+AsyncLibrary:
+    stage: build
+    script:
+        - echo "Building AsyncLibrary..."
+        - '"%BUILD_%" /p:Configuration="%MODE%" /p:Platform="%CPU_CONFIGURATION%" /p:OutputPath="%OUTPUT_%" /p:GenerateDocumentation=true'
+
+AsyncLibraryUnitTesting:
+    stage: build
+    script:
+        - echo "Building AsyncLibraryUnitTesting"
+        - '"%BUILD_%" /p:Configuration="%MODE%" /p:Platform="%CPU_CONFIGURATION%" /p:OutputPath="%OUTPUT_%" "AsyncLibraryUnitTesting\AsyncLibraryUnitTesting.csproj"'
+    artifacts:
+        paths:
+            - '%OUTPUT_%'
+        expire_in: 10 minutes
+  
+AsyncLibraryTest:
+    stage: test
+    script:
+        - echo "Starting tests..."
+        - '"%TEST_%" %OUTPUT_%\%TEST_DLL%'
+        
+Package:
+    stage: deploy
+    script:
+        - '"%NUGET_%" pack .\AsyncLibrary\AsyncLibrary.csproj -Build -Properties Configuration=%CPU_CONFIGURATION% -Version %CI_COMMIT_TAG% -ForceEnglishOutput -OutputDirectory \\%DARKRAI_%\nuget_feed'
+    only:
+        - tags
+    when: on_success
+        
+Document:
+    stage: deploy
+    script:
+        - '"%BUILD_%" /p:Configuration="%MODE%" /p:Platform="%CPU_CONFIGURATION%" /p:OutputPath="%OUTPUT_%" /p:GenerateDocumentation=true'
+        - '"C:\Program Files (x86)\Python36-32\python.exe" C:/Users/student/Document_Create/MediaWikiApiInterface.py %OUTPUT_%\AsyncLibrary.dll %OUTPUT_%\AsyncLibrary.xml'
+    only:
+        - tags
+    when: on_success

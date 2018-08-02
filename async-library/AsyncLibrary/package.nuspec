@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <!--*-->
+    <id>AsyncLibrary</id>
+    <!--*-->
+    <version>1.0.0</version>
+    <title>AsyncLibrary</title>
+    <!--*-->
+    <authors>Aptiv WLL</authors>
+    <owners>Aptiv WLL</owners>
+    <!--
+    <licenseUrl></licenseUrl>
+    <projectUrl></projectUrl>
+    <iconUrl></iconUrl>
+-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!--*-->
+    <description>Library that provides some async functionality for messaging applications.</description>
+    <!--*-->
+    <releaseNotes>First Release.</releaseNotes>
+    <copyright>Copyright © Aptiv WLL 2018</copyright>
+    <tags>
+    </tags>
+    <dependencies>
+      <!--
+      <dependency id="SampleDependency" version="1.0" />
+-->
+    </dependencies>
+  </metadata>
+</package>
